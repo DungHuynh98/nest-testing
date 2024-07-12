@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 export interface User {
   id: number
@@ -14,7 +14,12 @@ export class AppService {
   }
 
   findById(id: number): User {
-    return this.users.find(el => el.id === id)
+    const existed = this.users.find(el => el.id === id)
+    if (!existed) {
+      throw new NotFoundException('user not found')
+    }
+
+    return existed
   }
 
   create(name: string): User {
@@ -30,7 +35,7 @@ export class AppService {
   update(id: number, name: string): User {
     const index = this.users.findIndex(el => el.id === id)
     if (index === -1) {
-      throw new BadRequestException('user not found')
+      throw new NotFoundException('user not found')
     }
 
     const newUser = {
@@ -45,7 +50,7 @@ export class AppService {
   delete(id: number): { deleted: number } {
     const index = this.users.findIndex(el => el.id === id)
     if (index === -1) {
-      throw new BadRequestException('user not found')
+      throw new NotFoundException('user not found')
     }
 
     this.users.splice(index, 1)
