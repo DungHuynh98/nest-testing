@@ -36,7 +36,7 @@ export class AppController {
   }
 
   @Delete(':id')
-  delete(@Param('id', new ParseIntPipe()) id: number): boolean {
+  delete(@Param('id', new ParseIntPipe()) id: number): { deleted: number } {
     return this.appService.delete(id);
   }
 }

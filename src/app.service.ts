@@ -42,13 +42,15 @@ export class AppService {
     return newUser
   }
 
-  delete(id: number): boolean {
+  delete(id: number): { deleted: number } {
     const index = this.users.findIndex(el => el.id === id)
     if (index === -1) {
       throw new BadRequestException('user not found')
     }
 
     this.users.splice(index, 1)
-    return true
+    return {
+      deleted: 1
+    }
   }
 }
